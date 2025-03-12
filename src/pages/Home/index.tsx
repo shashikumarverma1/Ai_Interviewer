@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Brain, Users, BarChart, Award } from 'lucide-react';
-import { useRouter } from 'next/router';
+
 
 const Home = () => {
   const [joke, setJoke] = useState(null);
-  const router = useRouter();
+  // GenerateContent(`how to write a resume`);
+  // console.log(joke , "jokejoke")
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section */}
@@ -18,20 +20,20 @@ const Home = () => {
         </p>
         <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
           <div className="rounded-md shadow">
-          <button
-      onClick={() => router.push('/Interview')}
-      className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
-    >
-      Start Practice Interview
-    </button>
+            {/* <Link
+              to="/interview"
+              className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
+            >
+              Start Practice Interview
+            </Link> */}
           </div>
           <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
-            <button
-              onClick={() => router.push('/Login')}
+            {/* <Link
+              // to="/login"
               className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
             >
               Sign Up Free
-            </button>
+            </Link> */}
           </div>
         </div>
         <button
@@ -56,11 +58,11 @@ const Home = () => {
         >
           Test Backend
         </button>
-        {joke && (
+        {/* {joke && (
           <div className="mt-4 p-4 bg-gray-100 rounded">
             {joke}
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Features Section */}
