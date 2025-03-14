@@ -1,47 +1,49 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-
+import { json } from "stream/consumers";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "./firebaseConfig";
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "AIzaSyBaHc2NqF7TN18c3ImALmUCfsOBUbp0jR4");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-const fs = require('fs');  // Import File System module
-const path = require('path');
 
-
-
-type Data = {
-  name: string;
+type ResponseData = {
+  question?: string;
+  error?: string;
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>,
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method Not Allowed" });
+  }
+
   try {
-    const result = await model.generateContent("give me 5 interview question on react in json format");
-  
-// const filePath = path.join(__dirname, 'data.json'); // Path to the JSON file
-// Read the file and store its contents in a variable
-    let data = null;
-    try {
-      // data = fs.readFileSync(filePath, 'utf-8');
-      console.log(data, "datkkkkka");
-    } catch (error) {
-      console.error("Error reading data.json:", error);
-      return res.status(500).json({ name: "Error reading data.json" });
+    const { jobRole, jobDescription } = req.body;
+
+
+    if (!jobRole) {
+      return res.status(400).json({ error: "Job role and description are required." });
     }
-    // Convert JSON string to JavaScript object
-    let rawData = await result.response.text();
-        // Remove any unwanted markdown formatting (e.g., ```json ... ```)
-        let cleanedData = rawData
-        .replace(/```json/g, "") // Remove opening ```json
-        .replace(/```/g, "") // Remove closing ```
-        .trim(); // Trim extra spaces and new lines
-  // console.log(cleanedData , "cleanedData")
-    res.status(200).json({ name: cleanedData});
-} catch (error) {
+
+    const prompt = `Generate 5 interview questions in json format for the job role: "${jobRole} and job description ${jobDescription} ignore job jobDescription if it is irrelavent"`;
+
+  
+    try {
+      const result = await model.generateContent(prompt);
+      let rawData = await result.response.text();
+      let cleanedData = rawData.replace(/```json/g, "").replace(/```/g, "").trim();
+      // cleanedData=JSON.parse(cleanedData)
+      console.log(cleanedData, "cleanedData cleanedData")
+  
+      return res.status(200).json({ question: cleanedData });
+    } catch (error) {
+      console.error("Error :", error);
+    }
+    // Clean the response (remove markdown formatting)
+  
+  } catch (error) {
     console.error("Error generating content:", error);
+    return res.status(500).json({ error: "Failed to generate interview questions." });
+  }
 }
- 
-}
+

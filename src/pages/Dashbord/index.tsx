@@ -1,8 +1,39 @@
-import React from 'react';
-import { BarChart, Clock, ThumbsUp, AlertTriangle } from 'lucide-react';
+ 'use client'
 
-const Dashboard = () => {
+import React, { useEffect, useState } from 'react';
+import { BarChart, Clock, ThumbsUp, AlertTriangle } from 'lucide-react';
+import Navbar from '@/components/Navbar';
+import { useGoogleAuth } from '@/hook/GoogleAuth';
+
+
+// Example Usage
+
+export async function getServerSideProps(context:any) {
+  const {email}=context.query;
+  const res = await fetch(`http://localhost:3000/api/hello`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch orders");
+  }
+  const data = await res.json();
+  return {
+    props: { data },
+  };
+}
+
+const Dashboard = ({data}:{data:any}) => {
+  const {user}=useGoogleAuth()
+
+
+
+ console.log(data[0] , "jjjjjjjjjjj")
   return (
+    <>
+    <Navbar/>
     <div className="min-h-[calc(100vh-4rem)] bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-semibold text-gray-900">Interview Dashboard</h1>
@@ -95,6 +126,8 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
+    </>
+  
   );
 };
 

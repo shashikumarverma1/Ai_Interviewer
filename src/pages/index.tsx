@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { Brain, Users, BarChart, Award } from 'lucide-react';
 import { useRouter } from 'next/router';
+import Navbar from '@/components/Navbar';
+import SignInButton from '@/components/googleSignIn';
+import { useGoogleAuth } from '@/hook/GoogleAuth';
 
 const Home = () => {
-  const [joke, setJoke] = useState(null);
   const router = useRouter();
+ const {user}=useGoogleAuth()
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <Navbar/>
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center">
         <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
@@ -19,48 +23,32 @@ const Home = () => {
         <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
           <div className="rounded-md shadow">
           <button
-      onClick={() => router.push('/Interview')}
+      onClick={() => {
+        if(user){
+          router.push('/Interview')
+        }
+       
+      }}
       className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
     >
       Start Practice Interview
     </button>
           </div>
-          <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
-            <button
-              onClick={() => router.push('/Login')}
-              className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
+
+          {
+            !user &&    <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
+            <div
+              // onClick={() => router.push('/Login')}
+              className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-red-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
             >
-              Sign Up Free
-            </button>
+          <SignInButton/>
+            </div>
           </div>
+          }
+       
         </div>
-        <button
-           onClick={async () => {
-            try {
-              const prompt = "Tell me a joke.";
-              const response = await fetch(`/api/hello`);
+     
     
-              if (!response.ok) {
-                throw new Error("Failed to fetch joke");
-              }
-    
-              const data = await response.json();
-              console.log(response, "DDDD");
-    
-              setJoke(data?.text);
-            } catch (error) {
-              console.error("Error fetching joke:", error);
-            }
-          }}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          Test Backend
-        </button>
-        {joke && (
-          <div className="mt-4 p-4 bg-gray-100 rounded">
-            {joke}
-          </div>
-        )}
       </div>
 
       {/* Features Section */}
@@ -123,3 +111,7 @@ const Home = () => {
 };
 
 export default Home;
+
+function useAuth() {
+  throw new Error('Function not implemented.');
+}
