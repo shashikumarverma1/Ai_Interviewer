@@ -63,8 +63,8 @@ console.log(isLast  , email, "isLast")
 
     if (!docSnap.exists()) {
       // First time: Create the document with the array
-      await setDoc(docRefs, {   result:feedbackResponse });
-      console.log("Document created & item added:");
+      await setDoc(docRefs, {   result:[feedbackResponse] });
+      console.log(feedbackResponse ,"Document created & item added:");
     } else {
       // Document exists: Update it and push new item to array
       await updateDoc(docRefs, {
@@ -72,7 +72,7 @@ console.log(isLast  , email, "isLast")
           feedbackResponse
         ),
       });
-      console.log("New item added to existing array:",);
+      console.log(feedbackResponse ,"New item added to existing array:",);
     }
     // const docRef = await addDoc(collection(db, "interviews"), interviewData);
     // console.log("Document written with ID: ", docRef.id);
@@ -87,7 +87,7 @@ console.log(isLast  , email, "isLast")
       });
     const feedbackRes=allData[0]?.result
    
-
+console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
 
     const totalScore = feedbackRes.reduce((sum: any, item: { score: any; }) => sum + (item.score || 0), 0);
     const avgScore = totalScore / feedbackRes.length;
@@ -115,7 +115,8 @@ console.log(isLast  , email, "isLast")
     // Prepare summary response
     const summary = {
       avgScore: avgScore.toFixed(2),
-    
+    "strengths":highScores,
+    "weaknesses":lowScores ,
       verdict,
     };
 // console.log(summary)
@@ -128,52 +129,52 @@ console.log(isLast  , email, "isLast")
     })
     // res.setHeader('Allow', ['POST']);
   // res.status(405).json({ error: `Method ${req.method} not allowed` });
-
+  return res.status(200).json({});
     
   }
-  if(!isLast){
-    return res.status(200).json(feedbackResponse);
-  }else{
-    const feedbackDataRaw = await getDocs(collection(db,collectionName));
-    const allData: { id: string; }[] = [];
-    feedbackDataRaw.forEach((doc) => {
-      allData.push({ id: doc.id, ...doc.data() }); // Store docId with data
-    });
-  const feedbackRes=allData[0]?.result
+//   if(!isLast){
+//     return res.status(200).json(feedbackResponse);
+//   }else{
+//     const feedbackDataRaw = await getDocs(collection(db,collectionName));
+//     const allData: { id: string; }[] = [];
+//     feedbackDataRaw.forEach((doc) => {
+//       allData.push({ id: doc.id, ...doc.data() }); // Store docId with data
+//     });
+//   const feedbackRes=allData[0]?.result
 
-  const totalScore = feedbackRes.reduce((sum: any, item: { score: any; }) => sum + (item.score || 0), 0);
-  const avgScore = (totalScore / feedbackRes.length)*.01;
-  console.log(totalScore , "feedbackData")
+//   const totalScore = feedbackRes.reduce((sum: any, item: { score: any; }) => sum + (item.score || 0), 0);
+//   const avgScore = (totalScore / feedbackRes.length)*.01;
+//   console.log(totalScore , "feedbackData")
   
-  let verdict;
-  if (avgScore >= 80) {
-    verdict = "Excellent performance! You have a strong understanding of React concepts.";
-  } else if (avgScore >= 50) {
-    verdict = "Good effort! You have a decent understanding but need improvement in some areas.";
-  } else {
-    verdict = "Needs improvement. Focus on learning core  React concepts and best practices.";
-  }
+//   let verdict;
+//   if (avgScore >= 80) {
+//     verdict = "Excellent performance! You have a strong understanding of React concepts.";
+//   } else if (avgScore >= 50) {
+//     verdict = "Good effort! You have a decent understanding but need improvement in some areas.";
+//   } else {
+//     verdict = "Needs improvement. Focus on learning core  React concepts and best practices.";
+//   }
 
-  // Prepare summary response
-  const summary:any = {
-    avgScore: avgScore.toFixed(2),
+//   // Prepare summary response
+//   const summary:any = {
+//     avgScore: avgScore.toFixed(2),
   
-    verdict,
-  };
-// console.log(summary)
-  // return res.status(200).json(summary);
-  await updateDoc(docRefs, {
-    summary: arrayUnion( 
-      summary
-    ),
+//     verdict,
+//   };
+// // console.log(summary)
+//   // return res.status(200).json(summary);
+//   await updateDoc(docRefs, {
+//     summary: arrayUnion( 
+//       summary
+//     ),
 
-  })
- return  res.status(200).json(summary);
-  // res.setHeader('Allow', ['POST']);
-// res.status(405).json({ error: `Method ${req.method} not allowed` });
+//   })
+//  return  res.status(200).json(summary);
+//   // res.setHeader('Allow', ['POST']);
+// // res.status(405).json({ error: `Method ${req.method} not allowed` });
 
   
-}
+// }
   // Handle non-POST requests
   
 }}

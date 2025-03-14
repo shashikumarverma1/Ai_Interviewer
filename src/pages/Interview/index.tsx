@@ -165,12 +165,7 @@ console.log(feedback , "feedback")
                   </form>
 
                 </div>
-                {feedback && (
-                  <div className="px-6 py-4 bg-gray-100 rounded-lg">
-                    <h3 className="text-lg font-medium text-gray-900">Feedback:</h3>
-                    <p className="mt-2 text-gray-600">{feedback}</p>
-                  </div>
-                )}
+             
               </div>
             </div>
           </div> :  <div className="min-h-[calc(100vh-4rem)] bg-gray-50 py-10 flex flex-center">

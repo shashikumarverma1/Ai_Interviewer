@@ -1,0 +1,2 @@
+export const createQuestions=(jobRole:any , jobDescription:any)=>
+     `Generate 3 interview questions in json format for the job role: "${jobRole} and job description ${jobDescription} ignore job jobDescription if it is irrelavent"`;

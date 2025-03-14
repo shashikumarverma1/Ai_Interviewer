@@ -13,9 +13,9 @@ if (!admin.apps.length) {
   });
 }
 
-export async function middleware(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   const token =false // ||  request.cookies.get('authToken')?.value;
-  const protectedRoutes = ['/Dashboard', '/Home'];
+  const protectedRoutes = ['/Dashboard', '/Home' , "/"];
 console.log(protectedRoutes , "protectedRoutes")
   if (protectedRoutes.includes(request.nextUrl.pathname)) {
     if (!token) {
@@ -34,5 +34,5 @@ console.log(protectedRoutes , "protectedRoutes")
 }
 
 export const config = {
-  matcher: ['/Dashboard', '/Home'] // Apply middleware to protected routes
+  matcher: ['/Dashboard', '/Home' , "/"] // Apply middleware to protected routes
 };

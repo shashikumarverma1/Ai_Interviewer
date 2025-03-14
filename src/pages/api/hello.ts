@@ -4,7 +4,7 @@ import { db } from "./firebaseConfig";
 // pages/api/price.js
 export default async function handler(req:any, res:any) {
   if (req.method === 'POST') {
-      const { email } = req.body;
+      const { email ,  } = req.body;
       const collectionName = `Shashikant Verma`; // Change this to your collection name
     
   

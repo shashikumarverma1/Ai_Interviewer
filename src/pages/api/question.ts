@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { json } from "stream/consumers";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
+import { createQuestions } from "./propmt";
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "AIzaSyBaHc2NqF7TN18c3ImALmUCfsOBUbp0jR4");
@@ -25,11 +26,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       return res.status(400).json({ error: "Job role and description are required." });
     }
 
-    const prompt = `Generate 5 interview questions in json format for the job role: "${jobRole} and job description ${jobDescription} ignore job jobDescription if it is irrelavent"`;
+
 
   
     try {
-      const result = await model.generateContent(prompt);
+      const result = await model.generateContent(createQuestions());
       let rawData = await result.response.text();
       let cleanedData = rawData.replace(/```json/g, "").replace(/```/g, "").trim();
       // cleanedData=JSON.parse(cleanedData)

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { BarChart, Clock, ThumbsUp, AlertTriangle } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import { useGoogleAuth } from '@/hook/GoogleAuth';
+import FeedbackCard from '@/components/FeedbackCard';
 
 
 // Example Usage
@@ -29,8 +30,11 @@ const Dashboard = ({data}:{data:any}) => {
   const {user}=useGoogleAuth()
 
 
+  console.log(data[0]?.length, "jjjjjjjjjjj")
 
- console.log(data[0] , "jjjjjjjjjjj")
+ 
+
+ 
   return (
     <>
     <Navbar/>
@@ -49,7 +53,7 @@ const Dashboard = ({data}:{data:any}) => {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-gray-500 truncate">Total Practice Time</dt>
-                    <dd className="text-lg font-medium text-gray-900">2.5 hours</dd>
+                    <dd className="text-lg font-medium text-gray-900">{5*data[0]?.length } min</dd>
                   </dl>
                 </div>
               </div>
@@ -81,7 +85,7 @@ const Dashboard = ({data}:{data:any}) => {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-gray-500 truncate">Average Score</dt>
-                    <dd className="text-lg font-medium text-gray-900">85%</dd>
+                    <dd className="text-lg font-medium text-gray-900">{data[1][0]?.avgScore}%</dd>
                   </dl>
                 </div>
               </div>
@@ -97,7 +101,7 @@ const Dashboard = ({data}:{data:any}) => {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-gray-500 truncate">Areas to Improve</dt>
-                    <dd className="text-lg font-medium text-gray-900">3</dd>
+                    <dd className="text-lg font-medium text-gray-900">{data[1][0]?.weaknesses?.length}</dd>
                   </dl>
                 </div>
               </div>
@@ -107,20 +111,17 @@ const Dashboard = ({data}:{data:any}) => {
 
         {/* Recent Activity */}
         <div className="mt-8">
-          <h2 className="text-lg font-medium text-gray-900">Recent Activity</h2>
+          <h2 className="text-lg font-medium text-gray-900">Detail Result</h2>
           <div className="mt-4 bg-white shadow rounded-lg">
             <ul className="divide-y divide-gray-200">
-              {[1, 2, 3].map((item) => (
-                <li key={item} className="px-6 py-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">Software Engineer Interview Practice</p>
-                      <p className="text-sm text-gray-500">Completed 2 days ago</p>
-                    </div>
-                    <div className="text-sm text-indigo-600">Score: 88%</div>
-                  </div>
-                </li>
-              ))}
+              { data[0]?.length > 0 && data[0].map((item:any , index:number) => {
+                console.log(item[0] , "item")
+                return (
+               <FeedbackCard data={item } index={index}/>
+                )
+              }
+              
+              )}
             </ul>
           </div>
         </div>
