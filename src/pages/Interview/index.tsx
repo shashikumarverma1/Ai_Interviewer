@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Brain, Mic, Send } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -9,7 +9,7 @@ import Loader from '@/components/Loader';
 
 const Interview = () => {
   const router = useRouter();
- 
+  const {user}=useGoogleAuth()
   const [questions, setQuestion] = useState([])
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answer, setAnswer] = useState('');
@@ -20,10 +20,43 @@ const Interview = () => {
   const [jobDescription, setJobDescription] = useState('')
   const [showInterviewPannel, setShowInterviewPannel] = useState(false)
 const [loding , setLoding]=useState(false)
-  const {user}=useGoogleAuth()
+const [speechToText , setSpeechToText]=useState<string>("")
+
+const [isListening, setIsListening] = useState(false);
+const recognitionRef = useRef<any>(null);
+
+
+const startListening = () => {
+  setIsRecording(!isRecording);
+  if (!("webkitSpeechRecognition" in window)) {
+  console.log(window , "window")
+    alert("Your browser does not support speech recognition.");
+    return;
+  }
   
-  console.log(user , "user21838336")
-  console.log(user?.uid ,  user?.displayName  , user?.email , "22222222222222222222222")
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
+  };
+  const recognition = new (window as any).webkitSpeechRecognition();
+  recognition.lang = "en-US"; // Set language
+  recognition.continuous = false; // Stop after speaking
+  recognition.interimResults = false; // Only final results
+
+  recognition.onstart = () => setIsListening(true);
+  recognition.onresult = (event: any) => {
+    const transcript = event.results[0][0].transcript;
+    setSpeechToText(transcript);
+  };
+  recognition.onerror = (event: any) => console.error(event.error);
+  recognition.onend = () => setIsListening(false);
+
+  recognition.start();
+  recognitionRef.current = recognition;
+};
+
 
   const handleQuetionGenetaion = async (e) => {
     e.preventDefault();
@@ -56,7 +89,7 @@ setLoding(true)
     }
   };
 
-console.log(feedback , "feedback")
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoding(true)
@@ -98,7 +131,8 @@ console.log(feedback , "feedback")
 
   const toggleRecording = () => {
     // TODO: Implement voice recording
-    setIsRecording(!isRecording);
+    startListening()
+    // setIsRecording(!isRecording);
   };
 
   return (
