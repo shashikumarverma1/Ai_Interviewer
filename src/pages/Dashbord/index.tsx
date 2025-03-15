@@ -9,31 +9,47 @@ import FeedbackCard from '@/components/FeedbackCard';
 
 // Example Usage
 
-export async function getServerSideProps(context:any) {
-  const {email}=context.query;
-  const res = await fetch(`http://localhost:3000/api/hello`, {
+// export async function getServerSideProps(context:any) {
+//   // const {email , name}=context.query;
+//   const res = await fetch(`http://localhost:3000/api/getInterviewresult`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     // body: JSON.stringify({ email  , name}),
+//   });
+
+//   if (!res.ok) {
+//     throw new Error("Failed to fetch orders");
+//   }
+//   const data = await res.json();
+//   return {
+//     props: { data },
+//   };
+// }
+
+const Dashboard = () => {
+  const {user}=useGoogleAuth()
+  const [data , setData]=useState([])
+const GetData=async()=>{
+  const res = await fetch(`http://localhost:3000/api/getInterviewresult`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
+    body: JSON.stringify({email:user?.email}),
   });
 
   if (!res.ok) {
     throw new Error("Failed to fetch orders");
   }
   const data = await res.json();
-  return {
-    props: { data },
-  };
+  setData(data)
 }
 
-const Dashboard = ({data}:{data:any}) => {
-  const {user}=useGoogleAuth()
-
-
-  console.log(data[0]?.length, "jjjjjjjjjjj")
-
+  console.log(data[1]?.interviewCompleted, "jjjjjjjjjjj")
+useEffect(()=>{
+  if(user){
+    GetData()
+  }
  
-
+}, [user])
  
   return (
     <>
@@ -69,7 +85,7 @@ const Dashboard = ({data}:{data:any}) => {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-gray-500 truncate">Interviews Completed</dt>
-                    <dd className="text-lg font-medium text-gray-900">12</dd>
+                    <dd className="text-lg font-medium text-gray-900">{data[1]?.interviewCompleted }</dd>
                   </dl>
                 </div>
               </div>
@@ -85,7 +101,7 @@ const Dashboard = ({data}:{data:any}) => {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-gray-500 truncate">Average Score</dt>
-                    <dd className="text-lg font-medium text-gray-900">{data[1][0]?.avgScore}%</dd>
+                    <dd className="text-lg font-medium text-gray-900">{data[1]?.avgScore}%</dd>
                   </dl>
                 </div>
               </div>
@@ -101,7 +117,7 @@ const Dashboard = ({data}:{data:any}) => {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-gray-500 truncate">Areas to Improve</dt>
-                    <dd className="text-lg font-medium text-gray-900">{data[1][0]?.weaknesses?.length}</dd>
+                    <dd className="text-lg font-medium text-gray-900">{data[1]?.weaknesses}</dd>
                   </dl>
                 </div>
               </div>

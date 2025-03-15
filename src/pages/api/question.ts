@@ -1,7 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { json } from "stream/consumers";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "./firebaseConfig";
 import { createQuestions } from "./propmt";
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
@@ -30,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   
     try {
-      const result = await model.generateContent(createQuestions());
+      const result = await model.generateContent(createQuestions(jobRole ,jobDescription));
       let rawData = await result.response.text();
       let cleanedData = rawData.replace(/```json/g, "").replace(/```/g, "").trim();
       // cleanedData=JSON.parse(cleanedData)

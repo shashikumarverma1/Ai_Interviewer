@@ -4,6 +4,7 @@ import { Brain, Mic, Send } from 'lucide-react';
 import { useRouter } from 'next/router';
 import Navbar from '@/components/Navbar';
 import { useGoogleAuth } from '@/hook/GoogleAuth';
+import Loader from '@/components/Loader';
 
 
 const Interview = () => {
@@ -18,7 +19,7 @@ const Interview = () => {
   const [jobRole, setJobRole] = useState('')
   const [jobDescription, setJobDescription] = useState('')
   const [showInterviewPannel, setShowInterviewPannel] = useState(false)
-
+const [loding , setLoding]=useState(false)
   const {user}=useGoogleAuth()
   
   console.log(user , "user21838336")
@@ -26,7 +27,7 @@ const Interview = () => {
 
   const handleQuetionGenetaion = async (e) => {
     e.preventDefault();
-
+setLoding(true)
     try {
       const response = await fetch("/api/question", {
         method: "POST",
@@ -44,17 +45,21 @@ const Interview = () => {
 
         setQuestion(datas);
         setShowInterviewPannel(true)
+        setLoding(false)
       } else {
         console.error("Failed to fetch question.");
+        setLoding(false)
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      setLoding(false)
     }
   };
 
 console.log(feedback , "feedback")
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoding(true)
     if (answer === '') alert("Please enter the answer")
     const response = await fetch('/api/feedback', {
       method: 'POST',
@@ -72,12 +77,14 @@ console.log(feedback , "feedback")
     if (response.ok && currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1)
       setAnswer('');
+     
     }
     if (response.ok && currentQuestionIndex == questions.length - 1) {
       router.push('/Dashbord')
+
     }
     const data = await response.json();
-      
+    setLoding(false)
     setFeedback(data.feedback);
     setAnswer('');
   };
@@ -158,7 +165,7 @@ console.log(feedback , "feedback")
                           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
                         >
                           <Send className="h-4 w-4 mr-2" />
-                          Submit Answer
+                            { loding ? <Loader/> : "Submit Answer"} 
                         </button>
                       </div>
                     </div>
@@ -193,7 +200,9 @@ console.log(feedback , "feedback")
                     className="flex items-center px-5 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-all"
                   >
                     <Send className="h-5 w-5 mr-2" />
-                    Submit
+                    {
+                      loding ? <Loader/> :  "Submit"
+                    } 
                   </button>
                 </div>
               </form>
