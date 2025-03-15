@@ -5,6 +5,7 @@ import { BarChart, Clock, ThumbsUp, AlertTriangle } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import { useGoogleAuth } from '@/hook/GoogleAuth';
 import FeedbackCard from '@/components/FeedbackCard';
+import AuthGuard from '../authGuard';
 
 
 // Example Usage
@@ -148,4 +149,4 @@ useEffect(()=>{
   );
 };
 
-export default Dashboard;
+export default AuthGuard(Dashboard);

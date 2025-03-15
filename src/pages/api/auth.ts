@@ -8,7 +8,7 @@ export const signInWithGoogle = async () => {
    
   try {
     const result = await signInWithPopup(auth, provider);
-  
+    document.cookie = "token=your-secure-token; path=/";
     console.log("User Info:", result.user);
     return result.user;
   } catch (error) {

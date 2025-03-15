@@ -115,6 +115,4 @@ const Home = () => {
 
 export default Home;
 
-function useAuth() {
-  throw new Error('Function not implemented.');
-}
+

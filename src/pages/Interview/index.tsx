@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import Navbar from '@/components/Navbar';
 import { useGoogleAuth } from '@/hook/GoogleAuth';
 import Loader from '@/components/Loader';
+import AuthGuard from '../authGuard';
 
 
 const Interview = () => {
@@ -247,4 +248,4 @@ setLoding(true)
   );
 };
 
-export default Interview;
+export default AuthGuard(Interview);
