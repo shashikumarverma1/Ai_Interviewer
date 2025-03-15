@@ -6,30 +6,15 @@ import Navbar from '@/components/Navbar';
 import { useGoogleAuth } from '@/hook/GoogleAuth';
 import FeedbackCard from '@/components/FeedbackCard';
 import AuthGuard from '../authGuard';
+import LoadingScreen from '@/components/lodingscreen';
 
 
-// Example Usage
 
-// export async function getServerSideProps(context:any) {
-//   // const {email , name}=context.query;
-//   const res = await fetch(`http://localhost:3000/api/getInterviewresult`, {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     // body: JSON.stringify({ email  , name}),
-//   });
-
-//   if (!res.ok) {
-//     throw new Error("Failed to fetch orders");
-//   }
-//   const data = await res.json();
-//   return {
-//     props: { data },
-//   };
-// }
 
 const Dashboard = () => {
   const {user}=useGoogleAuth()
   const [data , setData]=useState([])
+  const [loading , setLoading]=useState(true)
 const GetData=async()=>{
   const res = await fetch(`http://localhost:3000/api/getInterviewresult`, {
     method: "POST",
@@ -39,9 +24,11 @@ const GetData=async()=>{
 
   if (!res.ok) {
     throw new Error("Failed to fetch orders");
+    setLoading(false)
   }
   const data = await res.json();
   setData(data)
+  setLoading(false)
 }
 
   console.log(data[1]?.interviewCompleted, "jjjjjjjjjjj")
@@ -52,9 +39,15 @@ useEffect(()=>{
  
 }, [user])
  
+if(loading){
+  return (
+    <LoadingScreen/>
+  )
+}
   return (
     <>
     <Navbar/>
+
     <div className="min-h-[calc(100vh-4rem)] bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-semibold text-gray-900">Interview Dashboard</h1>

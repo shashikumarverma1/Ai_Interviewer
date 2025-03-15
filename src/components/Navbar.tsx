@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Brain, Menu } from 'lucide-react';
 import { useRouter } from 'next/router';
-import SignInButton from './googleSignIn';
+import SignInButton, { signOutUser } from './googleSignIn';
 import { useGoogleAuth } from '@/hook/GoogleAuth';
 import { signOut } from 'firebase/auth';
-import { signOutUser } from '@/pages/api/auth';
+
 const Navbar = () => {
   const {user} =useGoogleAuth()
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);

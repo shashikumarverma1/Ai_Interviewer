@@ -1,19 +1,37 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import axios from "axios";
+import LoadingScreen from "@/components/lodingscreen";
+
 
 const AuthGuard = (WrappedComponent: any) => {
   return (props: any) => {
     const router = useRouter();
-    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const [loading, setLoading] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-      if (!token) {
-        console.log("❌ No token found, redirecting to /");
-        router.push("/");
-      }
-    }, [token]);
+      const checkAuth = async () => {
+        try {
+          const res = await axios.get("/api/tokenVerify"); // Backend API to verify auth
+          if (res.data.authenticated) {
+            setIsAuthenticated(true);
+          } else {
+            router.replace("/"); // Replace prevents going back
+          }
+        } catch (error) {
+          console.log("❌ Authentication failed:", error);
+          router.replace("/");
+        } finally {
+          setLoading(false);
+        }
+      };
 
-    if (!token) return null; // Prevent page render while redirecting
+      checkAuth();
+    }, []);
+
+    if (loading) return <LoadingScreen />; // Show loading screen while checking auth
+    if (!isAuthenticated) return null; // Prevent rendering before redirect
 
     return <WrappedComponent {...props} />;
   };

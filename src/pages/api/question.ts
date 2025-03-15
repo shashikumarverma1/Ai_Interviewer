@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
 
-
+console.log(createQuestions(jobRole ,jobDescription) , "hhhhhhhhhhh")
   
     try {
       const result = await model.generateContent(createQuestions(jobRole ,jobDescription));
