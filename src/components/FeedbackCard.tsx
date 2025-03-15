@@ -39,7 +39,7 @@ export default function FeedbackCard({ data, index }: { data: any, index: number
                 </div>
                 <div>
                     <h3 className="text-lg font-semibold text-gray-800">Score</h3>
-                    <p className={`text-lg font-bold ${data.score > 0 ? 'text-green-500' : 'text-red-500'}`}>{data.score}</p>
+                    <p className={`text-lg font-bold ${data.score > 0 ? 'text-green-500' : 'text-red-500'}`}>{data.score}/100</p>
                 </div>
             </div>
         </div>
