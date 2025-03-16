@@ -58,9 +58,12 @@ const startListening = () => {
         const transcript = event.results[i][0].transcript;
         if (event.results[i].isFinal) {
           finalTranscript += transcript + ' ';
+          setSpeechToText("")
         } else {
           interimTranscript += transcript;
+          setSpeechToText(interimTranscript)
         }
+
       }
 
       setAnswer(prevAnswer => prevAnswer + finalTranscript);
@@ -193,8 +196,8 @@ console.log(answer)
                     <div className="space-y-4">
                       <textarea
                     
-                        value={answer}
-                        onChange={(e) =>{
+                        value={answer + " " + speechToText}
+                        onChange={(e) =>{ 
                           setAnswer(e.target.value)
                         } }
                         rows={4}
