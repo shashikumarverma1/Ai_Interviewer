@@ -14,7 +14,7 @@ const Home = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <Navbar/>
       {/* Hero Section */}
-      <SpeechToText/>
+    
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center">
         <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
           <span className="block">Master Your Interviews with</span>

@@ -29,7 +29,7 @@ console.log(text , "dddddddddddddddd")
   const startListening = () => {
     if (recognition) {
       recognition.start();
-      setIsListening(true);
+      // setIsListening(true);
     }
   };
 

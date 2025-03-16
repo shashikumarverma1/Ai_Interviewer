@@ -29,34 +29,53 @@ const recognitionRef = useRef<any>(null);
 
 const startListening = () => {
   setIsRecording(!isRecording);
-  if (!("webkitSpeechRecognition" in window)) {
-  console.log(window , "window")
-    alert("Your browser does not support speech recognition.");
-    return;
+  if (recognition) {
+    recognition.start();
+    // setIsListening(true);
+  }
   }
   
   const stopListening = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
+  
+
+    if (recognition) {
+      recognition.stop();
       setIsListening(false);
     }
   };
-  const recognition = new (window as any).webkitSpeechRecognition();
-  recognition.lang = "en-US"; // Set language
-  recognition.continuous = false; // Stop after speaking
-  recognition.interimResults = false; // Only final results
+  let recognition: { continuous: boolean; interimResults: boolean; onresult: (event: any) => void; onend: () => void; start: () => void; stop: () => void; };
 
-  recognition.onstart = () => setIsListening(true);
-  recognition.onresult = (event: any) => {
-    const transcript = event.results[0][0].transcript;
-    setSpeechToText(transcript);
-  };
-  recognition.onerror = (event: any) => console.error(event.error);
-  recognition.onend = () => setIsListening(false);
+  if (typeof window !== "undefined" && "webkitSpeechRecognition" in window) {
+    recognition = new window.webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
 
-  recognition.start();
-  recognitionRef.current = recognition;
-};
+    recognition.onresult = (event) => {
+      let interimTranscript = '';
+      let finalTranscript = '';
+
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript + ' ';
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+
+      setAnswer(prevAnswer => prevAnswer + finalTranscript);
+    };
+
+    recognition.onend = () => {
+      if (isRecording) {
+        recognition.start();
+      }
+    };
+    
+  } else {
+    console.warn("Speech Recognition is not supported in this browser.");
+  }
+
 
 
   const handleQuetionGenetaion = async (e) => {
@@ -90,7 +109,7 @@ setLoding(true)
     }
   };
 
-
+console.log(answer)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoding(true)
@@ -130,11 +149,18 @@ setLoding(true)
     }
   }
 
+ 
+
+  
   const toggleRecording = () => {
-    // TODO: Implement voice recording
-    startListening()
-    // setIsRecording(!isRecording);
+    if (isRecording) {
+      stopListening();
+    } else {
+      startListening();
+    }
+    setIsRecording(!isRecording);
   };
+
 
   return (
     <>
@@ -166,8 +192,11 @@ setLoding(true)
                   <form onSubmit={handleSubmit}>
                     <div className="space-y-4">
                       <textarea
+                    
                         value={answer}
-                        onChange={(e) => setAnswer(e.target.value)}
+                        onChange={(e) =>{
+                          setAnswer(e.target.value)
+                        } }
                         rows={4}
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         placeholder="Type your answer here..."
