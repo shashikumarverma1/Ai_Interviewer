@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Brain, Menu } from 'lucide-react';
 import { useRouter } from 'next/router';
 import SignInButton, { signOutUser } from './googleSignIn';

@@ -1,9 +1,9 @@
 import { auth } from "@/pages/api/firebaseConfig";
-import { onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 
 export const useGoogleAuth = () => {
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
   
  

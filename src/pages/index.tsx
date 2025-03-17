@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import { Brain, Users, BarChart, Award } from 'lucide-react';
 import { useRouter } from 'next/router';
 import Navbar from '@/components/Navbar';
 import SignInButton from '@/components/googleSignIn';
 import { useGoogleAuth } from '@/hook/GoogleAuth';
-import SpeechToText from '@/components/speechTotext';
+
 
 const Home = () => {
   const router = useRouter();

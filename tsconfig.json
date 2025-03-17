@@ -17,6 +17,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/Feedback/index.jsx", "src/components/FeedbackCard.jsx", "src/pages/Interview/index.jsx", "src/pages/api/getInterviewresult.js", "src/hook/GoogleAuth.jsx"],
   "exclude": ["node_modules"]
 }

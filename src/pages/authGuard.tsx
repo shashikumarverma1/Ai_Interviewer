@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { ComponentType, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import LoadingScreen from "@/components/lodingscreen";
 
-
-const AuthGuard = (WrappedComponent: any) => {
-  return (props: any) => {
+const AuthGuard = <P extends object>(WrappedComponent: ComponentType<P>) => {
+  const AuthenticatedComponent = (props: P) => {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,10 +16,10 @@ const AuthGuard = (WrappedComponent: any) => {
           if (res.data.authenticated) {
             setIsAuthenticated(true);
           } else {
-            router.replace("/"); // Replace prevents going back
+            router.replace("/"); // Redirect to login
           }
         } catch (error) {
-          console.log("❌ Authentication failed:", error);
+          console.error("❌ Authentication failed:", error);
           router.replace("/");
         } finally {
           setLoading(false);
@@ -28,13 +27,15 @@ const AuthGuard = (WrappedComponent: any) => {
       };
 
       checkAuth();
-    }, []);
+    }, [router]); // ✅ Added 'router' in dependency array
 
-    if (loading) return <LoadingScreen />; // Show loading screen while checking auth
-    if (!isAuthenticated) return null; // Prevent rendering before redirect
+    if (loading) return <LoadingScreen />; // ✅ Show loading screen while checking auth
+    if (!isAuthenticated) return null; // ✅ Prevent rendering before redirect
 
     return <WrappedComponent {...props} />;
   };
+
+  return AuthenticatedComponent;
 };
 
 export default AuthGuard;

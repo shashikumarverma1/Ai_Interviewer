@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createQuestions } from "./propmt";
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "AIzaSyBaHc2NqF7TN18c3ImALmUCfsOBUbp0jR4");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -28,8 +28,8 @@ console.log(createQuestions(jobRole ,jobDescription) , "hhhhhhhhhhh")
   
     try {
       const result = await model.generateContent(createQuestions(jobRole ,jobDescription));
-      let rawData = await result.response.text();
-      let cleanedData = rawData.replace(/```json/g, "").replace(/```/g, "").trim();
+      const rawData = await result.response.text();
+      const cleanedData = rawData.replace(/```json/g, "").replace(/```/g, "").trim();
       // cleanedData=JSON.parse(cleanedData)
       console.log(cleanedData, "cleanedData cleanedData")
   

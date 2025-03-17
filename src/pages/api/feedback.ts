@@ -1,12 +1,17 @@
-import { addDoc, arrayUnion, collection, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import {  arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "AIzaSyBaHc2NqF7TN18c3ImALmUCfsOBUbp0jR4");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-export default async function handler(req: { method: string; body: { question: any; answer: any;name:any , email:any , isLast:Boolean }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { error?: string; message?: string; question?: any; answer?: any; }): void; new(): any; }; }; setHeader: (arg0: string, arg1: string[]) => void; }) {
+export default async function handler(req: { method: string; body: { question: string; answer: string
+  ;name:string , email:string , isLast:boolean }; },
+   res: { status: (arg0: number) => { 
+    json: { (arg0: { error?: string; message?: string; question?: string; answer?: string; }): 
+    void; new(): void; }; }; 
+   }) {
   if (req.method === 'POST') {
     const { question, answer , isLast, email , name } = req.body;
 
@@ -36,12 +41,12 @@ console.log(isLast  , email, "isLast")
     // Simulating storing feedback (In a real app, save to a database)
     const responseText = result.response.text();
 
-    let cleanedData = responseText
+    const cleanedData = responseText
       .replace(/```json/g, "") // Remove opening ```json
       .replace(/```/g, "") // Remove closing ```
       .trim();
     // console.log(cleanedData , "responseText")
-    let data = JSON.parse(cleanedData)
+    const data = JSON.parse(cleanedData)
     const feedbackResponse = {
         name,email,
       question,

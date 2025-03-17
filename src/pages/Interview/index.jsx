@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect,  useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Brain, Mic, Send } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -14,18 +14,19 @@ const Interview = () => {
   const [questions, setQuestion] = useState([])
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answer, setAnswer] = useState('');
-  const [feedback, setFeedback] = useState('');
+  const [, setFeedback] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const currentQuestion = questions[currentQuestionIndex];
   const [jobRole, setJobRole] = useState('')
   const [jobDescription, setJobDescription] = useState('')
   const [showInterviewPannel, setShowInterviewPannel] = useState(false)
   const [loding, setLoding] = useState(false)
-  const [speechToText, setSpeechToText] = useState<string>("")
 
-
-
-  const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
+  const { transcript,
+    //  listening ,
+      resetTranscript,
+    //  browserSupportsSpeechRecognition 
+    } = useSpeechRecognition();
 
 
 
@@ -63,8 +64,8 @@ const Interview = () => {
       if (response.ok) {
         const data = await response.json();
 
-        let cleanedData = data.question.replace(/```json/g, "").replace(/```/g, "").trim();
-        let datas = JSON.parse(cleanedData)
+        const cleanedData = data.question.replace(/```json/g, "").replace(/```/g, "").trim();
+        const datas = JSON.parse(cleanedData)
 
         setQuestion(datas);
         setShowInterviewPannel(true)
@@ -80,7 +81,7 @@ const Interview = () => {
   };
 
   
-  const handleSubmit = async (e: React.FormEvent , ) => {
+  const handleSubmit = async (e ) => {
     e.preventDefault();
     setLoding(true)
     if (answer === '') alert("Please enter the answer")
