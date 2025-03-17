@@ -4,7 +4,6 @@ import { Brain, Menu } from 'lucide-react';
 import { useRouter } from 'next/router';
 import SignInButton, { signOutUser } from './googleSignIn';
 import { useGoogleAuth } from '@/hook/GoogleAuth';
-import { signOut } from 'firebase/auth';
 
 const Navbar = () => {
   const {user} =useGoogleAuth()
@@ -51,10 +50,10 @@ const Navbar = () => {
             {
               user &&   <button 
               onClick={()=>{
-                Navigate('Dashbord')
+                Navigate('Feedback')
                }}
             className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-              Dashboard
+              Feedback
             </button>
             }
           

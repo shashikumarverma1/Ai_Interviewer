@@ -10,7 +10,7 @@ import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognitio
 
 const Interview = () => {
   const router = useRouter();
-  const {user}=useGoogleAuth()
+  const { user } = useGoogleAuth()
   const [questions, setQuestion] = useState([])
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answer, setAnswer] = useState('');
@@ -20,8 +20,8 @@ const Interview = () => {
   const [jobRole, setJobRole] = useState('')
   const [jobDescription, setJobDescription] = useState('')
   const [showInterviewPannel, setShowInterviewPannel] = useState(false)
-const [loding , setLoding]=useState(false)
-const [speechToText , setSpeechToText]=useState<string>("")
+  const [loding, setLoding] = useState(false)
+  const [speechToText, setSpeechToText] = useState<string>("")
 
 
 
@@ -29,27 +29,28 @@ const [speechToText , setSpeechToText]=useState<string>("")
 
 
 
-const startListening = () => {
-  setIsRecording(!isRecording);
-  resetTranscript();
-  SpeechRecognition.startListening({ continuous: true });
+  const startListening = () => {
+    setIsRecording(!isRecording);
+    resetTranscript();
+    SpeechRecognition.startListening({ continuous: true });
 
   }
-  
+
   const stopListening = () => {
     SpeechRecognition.stopListening()
-    setIsListening(false);
+    setIsRecording(false);
+
 
   };
 
-useEffect(()=>{
-  setAnswer(transcript)
-},[transcript])
+  useEffect(() => {
+    setAnswer(transcript)
+  }, [transcript])
 
 
   const handleQuetionGenetaion = async (e) => {
     e.preventDefault();
-setLoding(true)
+    setLoding(true)
     try {
       const response = await fetch("/api/question", {
         method: "POST",
@@ -78,8 +79,8 @@ setLoding(true)
     }
   };
 
-console.log(answer)
-  const handleSubmit = async (e: React.FormEvent) => {
+  
+  const handleSubmit = async (e: React.FormEvent , ) => {
     e.preventDefault();
     setLoding(true)
     if (answer === '') alert("Please enter the answer")
@@ -91,18 +92,18 @@ console.log(answer)
       body: JSON.stringify({
         question: currentQuestion,
         answer: answer,
-        isLast:currentQuestionIndex  == questions?.length - 1 ,
-        email:user?.email ,
-        name:user?.displayName
+        isLast: currentQuestionIndex == questions?.length - 1,
+        email: user?.email,
+        name: user?.displayName
       }),
     });
     if (response.ok && currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1)
       setAnswer('');
-     
+
     }
     if (response.ok && currentQuestionIndex == questions.length - 1) {
-      router.push('/Dashbord')
+      router.push('/Feedback')
 
     }
     const data = await response.json();
@@ -114,13 +115,13 @@ console.log(answer)
   const HandalNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-    
+
     }
   }
 
- 
 
-  
+
+
   const toggleRecording = () => {
     if (isRecording) {
       stopListening();
@@ -133,7 +134,7 @@ console.log(answer)
 
   return (
     <>
-<Navbar/>
+      <Navbar />
       {
         showInterviewPannel ?
           <div className="min-h-[calc(100vh-4rem)] bg-gray-50 py-8">
@@ -161,18 +162,15 @@ console.log(answer)
                   <form onSubmit={handleSubmit}>
                     <div className="space-y-4">
                       <textarea
-                    
-                        value={answer + " " + speechToText}
-                        onChange={(e) =>{ 
-                          setAnswer(e.target.value)
-                        } }
+                        value={answer}
+                        onChange={(e) => setAnswer(e.target.value)}
                         rows={4}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="p-4 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         placeholder="Type your answer here..."
                       />
                       <div className="flex items-center justify-between">
                         <button
-                         type="button"
+                          type="button"
                           onClick={() => {
                             HandalNextQuestion()
 
@@ -198,17 +196,17 @@ console.log(answer)
                           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
                         >
                           <Send className="h-4 w-4 mr-2" />
-                            { loding ? <Loader/> : "Submit Answer"} 
+                          {loding ? <Loader /> : "Submit Answer"}
                         </button>
                       </div>
                     </div>
                   </form>
 
                 </div>
-             
+
               </div>
             </div>
-          </div> :  <div className="min-h-[calc(100vh-4rem)] bg-gray-50 py-10 flex flex-center">
+          </div> : <div className="min-h-[calc(100vh-4rem)] bg-gray-50 py-10 flex flex-center">
             <div className="max-w-xl mx-auto p-6 bg-white shadow-lg rounded-xl">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <TextareaAutosize
@@ -234,8 +232,8 @@ console.log(answer)
                   >
                     <Send className="h-5 w-5 mr-2" />
                     {
-                      loding ? <Loader/> :  "Submit"
-                    } 
+                      loding ? <Loader /> : "Submit"
+                    }
                   </button>
                 </div>
               </form>
