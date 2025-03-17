@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import { useGoogleAuth } from '@/hook/GoogleAuth';
 import Loader from '@/components/Loader';
 import AuthGuard from '../authGuard';
-
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
 const Interview = () => {
   const router = useRouter();
@@ -23,62 +23,28 @@ const Interview = () => {
 const [loding , setLoding]=useState(false)
 const [speechToText , setSpeechToText]=useState<string>("")
 
-const [isListening, setIsListening] = useState(false);
-const recognitionRef = useRef<any>(null);
+
+
+  const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
+
 
 
 const startListening = () => {
   setIsRecording(!isRecording);
-  if (recognition) {
-    recognition.start();
-    // setIsListening(true);
-  }
+  resetTranscript();
+  SpeechRecognition.startListening({ continuous: true });
+
   }
   
   const stopListening = () => {
-  
+    SpeechRecognition.stopListening()
+    setIsListening(false);
 
-    if (recognition) {
-      recognition.stop();
-      setIsListening(false);
-    }
   };
-  let recognition: { continuous: boolean; interimResults: boolean; onresult: (event: any) => void; onend: () => void; start: () => void; stop: () => void; };
 
-  if (typeof window !== "undefined" && "webkitSpeechRecognition" in window) {
-    recognition = new window.webkitSpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
-
-    recognition.onresult = (event) => {
-      let interimTranscript = '';
-      let finalTranscript = '';
-
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const transcript = event.results[i][0].transcript;
-        if (event.results[i].isFinal) {
-          finalTranscript += transcript + ' ';
-          setSpeechToText("")
-        } else {
-          interimTranscript += transcript;
-          setSpeechToText(interimTranscript)
-        }
-
-      }
-
-      setAnswer(prevAnswer => prevAnswer + finalTranscript);
-    };
-
-    recognition.onend = () => {
-      if (isRecording) {
-        recognition.start();
-      }
-    };
-    
-  } else {
-    console.warn("Speech Recognition is not supported in this browser.");
-  }
-
+useEffect(()=>{
+  setAnswer(transcript)
+},[transcript])
 
 
   const handleQuetionGenetaion = async (e) => {
