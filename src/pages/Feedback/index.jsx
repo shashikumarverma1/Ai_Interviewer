@@ -15,7 +15,7 @@ const Dashboard = () => {
   const { user } = useGoogleAuth()
   const [data, setData] = useState([])
   const [questionCount, setQuestionCount] = useState(0)
-  const [InterviewCount, setInterviewCount] = useState(0)
+  const [, setInterviewCount] = useState(0)
   const [loading, setLoading] = useState(true)
   const GetData = async () => {
     const res = await fetch(`/api/getInterviewresult`, {

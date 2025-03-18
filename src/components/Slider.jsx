@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import SignInButton from './googleSignIn';
 import { useRouter } from 'next/router';
 
 const MenuSlider = ({ isMenuOpen, setIsMenuOpen, user, signOutUser }) => {
    const router = useRouter();
-   const Navigate = (nav: string) => {
+   const Navigate = (nav) => {
      router.push(`/${nav}`)
    }
 
