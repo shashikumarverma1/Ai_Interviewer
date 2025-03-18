@@ -34,7 +34,7 @@ const Dashboard = () => {
     setInterviewCount(data[1]?.length)
     setLoading(false)
   }
-console.log(data[1]?.interviewCompleted , "     hhhh")
+  console.log(data[1]?.interviewCompleted, "     hhhh")
   useEffect(() => {
     if (user) {
       GetData()
@@ -47,99 +47,108 @@ console.log(data[1]?.interviewCompleted , "     hhhh")
       <LoadingScreen />
     )
   }
+
+
+
+
   return (
     <>
       <Navbar />
-
-      <div className="min-h-[calc(100vh-4rem)] bg-gray-50 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-2xl font-semibold text-gray-900">Interview Dashboard</h1>
-
-          {/* Stats */}
-          <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <Clock className="h-6 w-6 text-gray-400" />
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">Total Practice Time</dt>
-                      <dd className="text-lg font-medium text-gray-900">{5 * questionCount} min</dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <BarChart className="h-6 w-6 text-gray-400" />
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">Interviews Completed</dt>
-                      <dd className="text-lg font-medium text-gray-900">{data[1]?.interviewCompleted}</dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <ThumbsUp className="h-6 w-6 text-gray-400" />
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">Average Score</dt>
-                      <dd className="text-lg font-medium text-gray-900">  {data[1]?.avgScore}%</dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <AlertTriangle className="h-6 w-6 text-gray-400" />
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">Areas to Improve</dt>
-                      <dd className="text-lg font-medium text-gray-900">{ data[1]?.weaknesses}</dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Recent Activity */}
-          <div className="mt-8">
-            <h2 className="text-lg font-medium text-gray-900">Detail Result</h2>
-            <div className="mt-4 bg-white shadow rounded-lg">
-              <ul className="divide-y divide-gray-200">
-                {questionCount > 0 && data[0]?.map((item, index) => {
-                 
-                  return (
-                    <FeedbackCard data={item} index={index} key={index} />
-                  )
-                }
-
-                )}
-              </ul>
-            </div>
-          </div>
+      {
+        !loading && data[0]==null ? <div className="flex items-center justify-center h-64">
+          <h4 className="text-md font-semibold text-gray-700 text-center">No Data Found</h4>
         </div>
-      </div>
+          : <div className="min-h-[calc(100vh-4rem)] bg-gray-50 py-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h1 className="text-2xl font-semibold text-gray-900">Interview Dashboard</h1>
+
+              {/* Stats */}
+              <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="bg-white overflow-hidden shadow rounded-lg">
+                  <div className="p-5">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0">
+                        <Clock className="h-6 w-6 text-gray-400" />
+                      </div>
+                      <div className="ml-5 w-0 flex-1">
+                        <dl>
+                          <dt className="text-sm font-medium text-gray-500 truncate">Total Practice Time</dt>
+                          <dd className="text-lg font-medium text-gray-900">{5 * questionCount} min</dd>
+                        </dl>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white overflow-hidden shadow rounded-lg">
+                  <div className="p-5">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0">
+                        <BarChart className="h-6 w-6 text-gray-400" />
+                      </div>
+                      <div className="ml-5 w-0 flex-1">
+                        <dl>
+                          <dt className="text-sm font-medium text-gray-500 truncate">Interviews Completed</dt>
+                          <dd className="text-lg font-medium text-gray-900">{data[1]?.interviewCompleted}</dd>
+                        </dl>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white overflow-hidden shadow rounded-lg">
+                  <div className="p-5">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0">
+                        <ThumbsUp className="h-6 w-6 text-gray-400" />
+                      </div>
+                      <div className="ml-5 w-0 flex-1">
+                        <dl>
+                          <dt className="text-sm font-medium text-gray-500 truncate">Average Score</dt>
+                          <dd className="text-lg font-medium text-gray-900">  {data[1]?.avgScore}%</dd>
+                        </dl>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white overflow-hidden shadow rounded-lg">
+                  <div className="p-5">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0">
+                        <AlertTriangle className="h-6 w-6 text-gray-400" />
+                      </div>
+                      <div className="ml-5 w-0 flex-1">
+                        <dl>
+                          <dt className="text-sm font-medium text-gray-500 truncate">Areas to Improve</dt>
+                          <dd className="text-lg font-medium text-gray-900">{data[1]?.weaknesses}</dd>
+                        </dl>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Recent Activity */}
+              <div className="mt-8">
+                <h2 className="text-lg font-medium text-gray-900">Detail Result</h2>
+                <div className="mt-4 bg-white shadow rounded-lg">
+                  <ul className="divide-y divide-gray-200">
+                    {questionCount > 0 && data[0]?.map((item, index) => {
+
+                      return (
+                        <FeedbackCard data={item} index={index} key={index} />
+                      )
+                    }
+
+                    )}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+      }
+
     </>
 
   );

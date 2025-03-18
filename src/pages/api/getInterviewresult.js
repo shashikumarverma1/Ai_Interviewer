@@ -14,12 +14,12 @@ export default async function handler(req, res) {
   });
 const feedbackRes=allData[0]?.result?.slice(allData[0]?.result?.length - NumberOfQuestion)
 
-const totalScore = feedbackRes.reduce((sum, item) => sum + (item.score || 0), 0);
-const avgScore = totalScore / feedbackRes.length;
+const totalScore = feedbackRes?.reduce((sum, item) => sum + (item.score || 0), 0);
+const avgScore = totalScore / feedbackRes?.length;
 console.log(allData[0]?.result.length , "feedbackData")
 
-const highScores = feedbackRes.filter((item) => item.score >= 80);
-const lowScores = feedbackRes.filter((item) => item.score < 50);
+const highScores = feedbackRes?.filter((item) => item.score >= 80);
+const lowScores = feedbackRes?.filter((item) => item.score < 50);
 
 
 let verdict;
