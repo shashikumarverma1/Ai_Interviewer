@@ -1,10 +1,6 @@
 import {  arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
-
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "AIzaSyBaHc2NqF7TN18c3ImALmUCfsOBUbp0jR4");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+import { model } from "@/utils/GeminiAi";
 
 export default async function handler(req: { method: string; body: { question: string; answer: string
   ;name:string , email:string , isLast:boolean }; },
