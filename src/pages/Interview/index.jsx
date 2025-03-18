@@ -1,4 +1,4 @@
-import React, { useEffect,  useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Brain, Mic, Send } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -24,9 +24,9 @@ const Interview = () => {
 
   const { transcript,
     //  listening ,
-      resetTranscript,
+    resetTranscript,
     //  browserSupportsSpeechRecognition 
-    } = useSpeechRecognition();
+  } = useSpeechRecognition();
 
 
 
@@ -52,7 +52,7 @@ const Interview = () => {
   const handleQuetionGenetaion = async (e) => {
     e.preventDefault();
     setLoding(true)
-    
+
     try {
       const response = await fetch(`/api/question`, {
         method: "POST",
@@ -81,8 +81,8 @@ const Interview = () => {
     }
   };
 
-  
-  const handleSubmit = async (e ) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoding(true)
     if (answer === '') alert("Please enter the answer")
@@ -161,7 +161,7 @@ const Interview = () => {
                 </div>
 
                 {/* Answer Input */}
-                <div className="px-6 py-4">
+                <div className="px-6 py-2">
                   <form onSubmit={handleSubmit}>
                     <div className="space-y-4">
                       <textarea
@@ -171,23 +171,21 @@ const Interview = () => {
                         className="p-4 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         placeholder="Type your answer here..."
                       />
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4">
                         <button
                           type="button"
-                          onClick={() => {
-                            HandalNextQuestion()
-
-                          }}
-                          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+                          onClick={HandalNextQuestion}
+                          className="w-full sm:w-auto inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
                         >
                           Next Question
                         </button>
+
                         <button
                           type="button"
                           onClick={toggleRecording}
-                          className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md ${isRecording
-                            ? 'bg-red-600 hover:bg-red-700 text-white'
-                            : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                          className={`w-full sm:w-auto inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md ${isRecording
+                              ? 'bg-red-600 hover:bg-red-700 text-white'
+                              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
                             }`}
                         >
                           <Mic className="h-4 w-4 mr-2" />
@@ -196,7 +194,7 @@ const Interview = () => {
 
                         <button
                           type="submit"
-                          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+                          className="w-full sm:w-auto inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
                         >
                           <Send className="h-4 w-4 mr-2" />
                           {loding ? <Loader /> : "Submit Answer"}
