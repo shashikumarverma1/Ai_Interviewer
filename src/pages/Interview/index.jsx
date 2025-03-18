@@ -108,6 +108,7 @@ const Interview = () => {
       router.push('/Feedback')
 
     }
+    setIsRecording(false)
     const data = await response.json();
     setLoding(false)
     setFeedback(data.feedback);
@@ -117,7 +118,7 @@ const Interview = () => {
   const HandalNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-
+      setIsRecording(false)
     }
   }
 
