@@ -84,11 +84,11 @@ const Interview = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
- 
+
     if (answer === '') {
       setErr("Please enter the answer required field")
-     
-      return ;
+
+      return;
     }
     setLoding(true)
     const response = await fetch(`/api/feedback`, {
@@ -171,23 +171,24 @@ const Interview = () => {
                     <div className="space-y-4">
                       <textarea
                         value={answer}
-                        onChange={(e) =>{
+                        onChange={(e) => {
                           setErr("")
-                          setAnswer(e.target.value)}}
+                          setAnswer(e.target.value)
+                        }}
                         rows={4}
                         className="p-4 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         placeholder="Type your answer here..."
                       />
                       {err && (
                         <p className="text-red-600 bg-red-100 border border-red-400 rounded-md p-2 mt-2 text-sm">
-                           {err} 
+                          {err}
                         </p>
                       )}
                       <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4">
                         <button
                           type="button"
                           onClick={HandalNextQuestion}
-                          className="w-full sm:w-auto inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+                          className="w-full sm:w-auto flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
                         >
                           Next Question
                         </button>
@@ -195,9 +196,9 @@ const Interview = () => {
                         <button
                           type="button"
                           onClick={toggleRecording}
-                          className={`w-full sm:w-auto inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md ${isRecording
-                            ? 'bg-red-600 hover:bg-red-700 text-white'
-                            : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                          className={`w-full sm:w-auto flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md ${isRecording
+                              ? 'bg-red-600 hover:bg-red-700 text-white'
+                              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
                             }`}
                         >
                           <Mic className="h-4 w-4 mr-2" />
@@ -207,12 +208,13 @@ const Interview = () => {
                         <button
                           type="submit"
                           disabled={loding}
-                          className="w-full sm:w-auto inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+                          className="w-full sm:w-auto flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
                         >
                           <Send className="h-4 w-4 mr-2" />
                           {loding ? <Loader /> : "Submit Answer"}
                         </button>
                       </div>
+
                     </div>
                   </form>
 
