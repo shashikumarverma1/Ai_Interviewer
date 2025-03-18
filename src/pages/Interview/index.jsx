@@ -225,7 +225,7 @@ const Interview = () => {
                   onChange={(e) => setJobDescription(e.target.value)}
                   minRows={4}
                   className="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 text-gray-700 transition-all"
-                  placeholder="Describe the role"
+                  placeholder="Describe the role (optional)"
                 />
 
                 <div className="flex justify-end">
