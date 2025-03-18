@@ -16,7 +16,7 @@ const feedbackRes=allData[0]?.result?.slice(allData[0]?.result?.length - NumberO
 
 const totalScore = feedbackRes.reduce((sum, item) => sum + (item.score || 0), 0);
 const avgScore = totalScore / feedbackRes.length;
-console.log(totalScore , "feedbackData")
+console.log(allData[0]?.result.length , "feedbackData")
 
 const highScores = feedbackRes.filter((item) => item.score >= 80);
 const lowScores = feedbackRes.filter((item) => item.score < 50);
@@ -36,7 +36,7 @@ const summary = {
   avgScore: avgScore.toFixed(2),
 "strengths":highScores,
 "weaknesses":lowScores?.length ,
-"interviewCompleted":allData[0]?.result?.length / 3,
+"interviewCompleted":Math.floor(Math.abs(allData[0]?.result?.length / NumberOfQuestion)),
   verdict,
 };
 console.log(summary , "summary summary")

@@ -52,8 +52,9 @@ const Interview = () => {
   const handleQuetionGenetaion = async (e) => {
     e.preventDefault();
     setLoding(true)
+    
     try {
-      const response = await fetch("/api/question", {
+      const response = await fetch(`/api/question`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +86,7 @@ const Interview = () => {
     e.preventDefault();
     setLoding(true)
     if (answer === '') alert("Please enter the answer")
-    const response = await fetch('/api/feedback', {
+    const response = await fetch(`/api/feedback`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

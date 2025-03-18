@@ -11,8 +11,8 @@ console.log(token , "token")
   res.setHeader(
     "Set-Cookie",
     serialize("authToken", token, {
-      httpOnly: true, // 🔒 Secure (JS cannot access)
-      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
+      // httpOnly: !true, // 🔒 Secure (JS cannot access)
+      // secure: true , //"development" === "production", // Use HTTPS in production
       sameSite: "strict", // Prevent CSRF
       path: "/", // Available across all pages
       maxAge: 60 * 60 * 24 * 7, // 7 days expiry

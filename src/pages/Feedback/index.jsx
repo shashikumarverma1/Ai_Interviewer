@@ -18,7 +18,7 @@ const Dashboard = () => {
   const [InterviewCount, setInterviewCount] = useState(0)
   const [loading, setLoading] = useState(true)
   const GetData = async () => {
-    const res = await fetch(`http://localhost:3000/api/getInterviewresult`, {
+    const res = await fetch(`/api/getInterviewresult`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: user?.email }),
@@ -34,7 +34,7 @@ const Dashboard = () => {
     setInterviewCount(data[1]?.length)
     setLoading(false)
   }
-
+console.log(data[1]?.interviewCompleted , "     hhhh")
   useEffect(() => {
     if (user) {
       GetData()
@@ -82,7 +82,7 @@ const Dashboard = () => {
                   <div className="ml-5 w-0 flex-1">
                     <dl>
                       <dt className="text-sm font-medium text-gray-500 truncate">Interviews Completed</dt>
-                      <dd className="text-lg font-medium text-gray-900">{InterviewCount}</dd>
+                      <dd className="text-lg font-medium text-gray-900">{data[1]?.interviewCompleted}</dd>
                     </dl>
                   </div>
                 </div>

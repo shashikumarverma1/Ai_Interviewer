@@ -3,12 +3,13 @@ import { Brain, Menu } from 'lucide-react';
 import { useRouter } from 'next/router';
 import SignInButton, { signOutUser } from './googleSignIn';
 import { useGoogleAuth } from '@/hook/GoogleAuth';
+import MenuSlider from './Slider';
 
 const Navbar = () => {
-  const {user} =useGoogleAuth()
+  const { user } = useGoogleAuth()
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const router = useRouter();
-  const Navigate=(nav:string)=>{
+  const Navigate = (nav: string) => {
     router.push(`/${nav}`)
   }
   return (
@@ -16,11 +17,11 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
-            <button 
-           onClick={()=>{
-            Navigate('')
-           }}
-             className="flex items-center">
+            <button
+              onClick={() => {
+                Navigate('')
+              }}
+              className="flex items-center">
               <Brain className="h-8 w-8 text-indigo-600" />
               <span className="ml-2 text-xl font-bold text-gray-900">AI Interview Pro</span>
             </button>
@@ -28,49 +29,49 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden sm:flex sm:items-center sm:space-x-8">
-            <button 
-            onClick={()=>{
-              Navigate('')
-             }}
-             className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+            <button
+              onClick={() => {
+                Navigate('')
+              }}
+              className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
               Home
             </button>
 
             {
-               user &&    <button 
-               onClick={()=>{
-                Navigate('Interview')
-               }}
-               className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+              user && <button
+                onClick={() => {
+                  Navigate('Interview')
+                }}
+                className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
                 Start Interview
               </button>
             }
-          
+
             {
-              user &&   <button 
-              onClick={()=>{
-                Navigate('Feedback')
-               }}
-            className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-              Feedback
-            </button>
+              user && <button
+                onClick={() => {
+                  Navigate('Feedback')
+                }}
+                className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+                Feedback
+              </button>
             }
-          
+
             {
-               !user ? <div 
-           
-               className="bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700">
-                <SignInButton/>
-              </div> : <div 
-           
-           className="bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700">
-                <button onClick={()=>{
+              !user ? <div
+
+                className="bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700">
+                <SignInButton />
+              </div> : <div
+
+                className="bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700">
+                <button onClick={() => {
                   signOutUser()
                   Navigate("")
                 }}>Sign out</button>
-          </div>
+              </div>
             }
-           
+
           </div>
 
           {/* Mobile menu button */}
@@ -86,40 +87,68 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Navigation */}
-      {isMenuOpen && (
+      {/* {isMenuOpen && (
         <div className="sm:hidden">
           <div className="pt-2 pb-3 space-y-1">
             <button
-         
+
               className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={() => {
+                Navigate('')
+                setIsMenuOpen(false)
+              }}
             >
               Home
             </button>
-            <button
-              // to="/interview"
-              className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Start Interview
-            </button>
-            <button
-              // to="/dashboard"
-              className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Dashboard
-            </button>
+            {
+              user && <button
+                // to="/interview"
+                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
+                onClick={() => {
+
+                  Navigate('Interview')
+                  setIsMenuOpen(false)
+                }}
+              >
+                Start Interview
+              </button>
+            }
+            {
+              user && <button
+                // to="/dashboard"
+                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
+                onClick={() => {
+                  Navigate('Feedback')
+                  setIsMenuOpen(false)
+                }}
+              >
+                Feedback
+              </button>
+            }
             <button
               // to="/login"
               className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
               onClick={() => setIsMenuOpen(false)}
             >
-              Sign In
+              {
+                !user ? <div
+
+                  className="bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700">
+                  <SignInButton />
+                </div> : <div
+
+                  className="bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700">
+                  <button onClick={() => {
+                    signOutUser()
+                    Navigate("")
+                  }}>Sign out</button>
+                </div>
+              }
             </button>
           </div>
         </div>
-      )}
+      )} */}
+      <MenuSlider isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} user={user} signOutUser={signOutUser}/>
     </nav>
   );
 };
