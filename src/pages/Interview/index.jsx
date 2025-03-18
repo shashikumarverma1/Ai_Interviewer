@@ -21,6 +21,7 @@ const Interview = () => {
   const [jobDescription, setJobDescription] = useState('')
   const [showInterviewPannel, setShowInterviewPannel] = useState(false)
   const [loding, setLoding] = useState(false)
+  const [nextloding, setNextloding] = useState(false)
   const [err, setErr] = useState("")
   const { transcript,
     //  listening ,
@@ -121,9 +122,32 @@ const Interview = () => {
     setAnswer('');
   };
 
-  const HandalNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+  const HandalNextQuestion = async () => {
+    setNextloding(true)
+    if (currentQuestionIndex < questions.length) {
+      const response = await fetch(`/api/feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          question: currentQuestion,
+          answer: "no answer",
+          isLast: currentQuestionIndex == questions?.length - 1,
+          email: user?.email,
+          name: user?.displayName
+        }),
+      });
+      if (response.ok && currentQuestionIndex < questions.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1)
+        setAnswer('');
+        setNextloding(false)
+      }
+
+      if (response.ok && currentQuestionIndex == questions.length - 1) {
+        router.push('/Feedback')
+      }
+
       stopListening();
       setIsRecording(false)
     }
@@ -187,20 +211,25 @@ const Interview = () => {
                         </p>
                       )}
                       <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4">
-                        <button
-                          type="button"
-                          onClick={HandalNextQuestion}
-                          className="w-full sm:w-auto flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
-                        >
-                          Next Question
-                        </button>
+
+                        {
+                          <button
+                            type="button"
+                            onClick={HandalNextQuestion}
+                            className="w-full sm:w-auto flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+                          >
+                            {
+                              !nextloding ? "Next Question" : <Loader />
+                            }
+                          </button>
+                        }
 
                         <button
                           type="button"
                           onClick={toggleRecording}
                           className={`w-full sm:w-auto flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md ${isRecording
-                              ? 'bg-red-600 hover:bg-red-700 text-white'
-                              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                            ? 'bg-red-600 hover:bg-red-700 text-white'
+                            : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
                             }`}
                         >
                           <Mic className="h-4 w-4 mr-2" />

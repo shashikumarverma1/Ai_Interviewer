@@ -1,20 +1,28 @@
-import {  arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 import { model } from "@/utils/GeminiAi";
 
-export default async function handler(req: { method: string; body: { question: string; answer: string
-  ;name:string , email:string , isLast:boolean }; },
-   res: { status: (arg0: number) => { 
-    json: { (arg0: { error?: string; message?: string; question?: string; answer?: string; }): 
-    void; new(): void; }; }; 
-   }) {
+export default async function handler(req: {
+  method: string; body: {
+    question: string; answer: string
+      ; name: string, email: string, isLast: boolean
+  };
+},
+  res: {
+    status: (arg0: number) => {
+      json: {
+        (arg0: { error?: string; message?: string; question?: string; answer?: string; }):
+          void; new(): void;
+      };
+    };
+  }) {
   if (req.method === 'POST') {
-    const { question, answer , isLast, email , name } = req.body;
+    const { question, answer, isLast, email, name } = req.body;
 
     if (!question || !answer || !email) {
       return res.status(400).json({ error: "Question and answer are required" });
     }
-console.log(isLast  , email, "isLast")
+    console.log(isLast, email, "isLast")
     //   const datass = fs.readFileSync(filePath, 'utf-8');
 
     const prompt = `
@@ -44,7 +52,7 @@ console.log(isLast  , email, "isLast")
     // console.log(cleanedData , "responseText")
     const data = JSON.parse(cleanedData)
     const feedbackResponse = {
-        name,email,
+      name, email,
       question,
       answer,
       score: data.score,
@@ -52,7 +60,7 @@ console.log(isLast  , email, "isLast")
       improvement: data.improvement,
       timestamp: new Date().toISOString(),
     };
-   
+
     const collectionName = `${email}`; // Change this to your collection name
     const docId = collectionName; // Unique document ID
 
@@ -61,18 +69,19 @@ console.log(isLast  , email, "isLast")
 
     if (!docSnap.exists()) {
       // First time: Create the document with the array
-      await setDoc(docRefs, {   result:[feedbackResponse] });
-      console.log(feedbackResponse ,"Document created & item added:");
+      await setDoc(docRefs, { result: [feedbackResponse] });
+      console.log(feedbackResponse, "Document created & item added:");
     } else {
       // Document exists: Update it and push new item to array
       await updateDoc(docRefs, {
-        result: arrayUnion( 
+        result: arrayUnion(
           feedbackResponse
         ),
       });
-      console.log(feedbackResponse ,"New item added to existing array:",);
+      console.log(feedbackResponse, "New item added to existing array:",);
     }
- 
+
     return res.status(200).json(feedbackResponse);
 
-}}
+  }
+}
